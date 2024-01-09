@@ -1,45 +1,63 @@
-## callchimp@1.0.0
+# TypeScript SDK for Callchimp API
 
-This generator creates TypeScript/JavaScript client that utilizes [Fetch API](https://fetch.spec.whatwg.org/). The generated Node module can be used in the following environments:
+This TypeScript SDK provides a convenient wrapper for the Callchimp API, allowing developers to easily integrate Callchimp's functionalities into their TypeScript or JavaScript applications.
 
-Environment
-* Node.js
-* Webpack
-* Browserify
+## Features
 
-Language level
-* ES5 - you must have a Promises/A+ library installed
-* ES6
+- Easy-to-use methods for interacting with the Callchimp API.
+- Supports all major functionalities of the Callchimp service.
 
-Module system
-* CommonJS
-* ES6 module system
+## Installation
 
-It can be used in both TypeScript and JavaScript. In TypeScript, the definition should be automatically resolved via `package.json`. ([Reference](http://www.typescriptlang.org/docs/handbook/typings-for-npm-packages.html))
+Install the package using npm:
 
-### Building
-
-To build and compile the typescript sources to javascript use:
-```
-npm install
-npm run build
+```bash
+npm install @dynopii/callchimp
 ```
 
-### Publishing
+Or using yarn:
 
-First build the package then run ```npm publish```
-
-### Consuming
-
-navigate to the folder of your consuming project and run one of the following commands.
-
-_published:_
-
-```
-npm install callchimp@1.0.0 --save
+```bash
+yarn add @dynopii/callchimp
 ```
 
-_unPublished (not recommended):_
+## Usage
 
+First, import the necessary modules and configure the SDK with your API key:
+
+```typescript
+import { CampaignsApi, Configuration } from '@dynopii/callchimp';
+
+const config = new Configuration({
+    basePath: "https://api.callchimp.ai/v1",
+    apiKey: "YOUR_API_KEY"
+});
+
+const campaignsApi = new CampaignsApi(config);
 ```
-npm install PATH_TO_GENERATED_PACKAGE --save
+
+### Listing Campaigns
+
+To list all campaigns:
+
+```typescript
+async function listCampaigns() {
+    try {
+        const campaigns = await campaignsApi.campaignsList();
+        console.log(campaigns);
+    } catch (error) {
+        console.error('Error fetching campaigns:', error);
+    }
+}
+
+listCampaigns();
+```
+
+## Documentation
+
+For detailed API documentation and more examples, visit [Callchimp API Documentation](https://api.callchimp.ai).
+
+
+## License
+
+This SDK is released under the [MIT License](LICENSE).
