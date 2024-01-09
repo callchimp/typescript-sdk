@@ -1,0 +1,36 @@
+{
+  "name": "@dynopii/callchimp",
+  "version": "0.1.0",
+  "description": "OpenAPI client for callchimp",
+  "author": "OpenAPI-Generator",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GIT_USER_ID/GIT_REPO_ID.git"
+  },
+  "main": "./dist/index.js",
+  "typings": "./dist/index.d.ts",
+  "module": "./dist/esm/index.js",
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsc && tsc -p tsconfig.esm.json",
+    "prepare": "npm run build"
+  },
+  "devDependencies": {
+    "typescript": "^4.0"
+  },
+  "bugs": {
+    "url": "https://github.com/GIT_USER_ID/GIT_REPO_ID/issues"
+  },
+  "homepage": "https://github.com/GIT_USER_ID/GIT_REPO_ID#readme",
+  "keywords": [
+    "callchimp",
+    "calling",
+    "ai",
+    "calls",
+    "calling-ai",
+    "callchimp-ai",
+    "ai-tools",
+    "dynopii"
+  ],
+  "license": "ISC"
+}
