@@ -12,54 +12,69 @@
  * Do not edit the class manually.
  */
 
-
-import * as runtime from '../runtime';
-import type {
-  Model4XXResponse,
-  PhoneNumberListResponse,
-} from '../models/index';
+import { exists, mapValues } from '../runtime';
+import type { Model4XXResponseErrorsInner } from './Model4XXResponseErrorsInner';
 import {
-    Model4XXResponseFromJSON,
-    Model4XXResponseToJSON,
-    PhoneNumberListResponseFromJSON,
-    PhoneNumberListResponseToJSON,
-} from '../models/index';
+    Model4XXResponseErrorsInnerFromJSON,
+    Model4XXResponseErrorsInnerFromJSONTyped,
+    Model4XXResponseErrorsInnerToJSON,
+} from './Model4XXResponseErrorsInner';
 
 /**
  * 
+ * @export
+ * @interface Model4XXResponse
  */
-export class PhoneNumbersApi extends runtime.BaseAPI {
-
+export interface Model4XXResponse {
     /**
      * 
-     * List Phone Numbers
+     * @type {string}
+     * @memberof Model4XXResponse
      */
-    async phoneNumbersListRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PhoneNumberListResponse>> {
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.apiKey) {
-            headerParameters["x-api-key"] = this.configuration.apiKey("x-api-key"); // x-api-key authentication
-        }
-
-        const response = await this.request({
-            path: `/phone_numbers`,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => PhoneNumberListResponseFromJSON(jsonValue));
-    }
-
+    type?: string;
     /**
      * 
-     * List Phone Numbers
+     * @type {Array<Model4XXResponseErrorsInner>}
+     * @memberof Model4XXResponse
      */
-    async phoneNumbersList(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PhoneNumberListResponse> {
-        const response = await this.phoneNumbersListRaw(initOverrides);
-        return await response.value();
-    }
-
+    errors?: Array<Model4XXResponseErrorsInner>;
 }
+
+/**
+ * Check if a given object implements the Model4XXResponse interface.
+ */
+export function instanceOfModel4XXResponse(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
+}
+
+export function Model4XXResponseFromJSON(json: any): Model4XXResponse {
+    return Model4XXResponseFromJSONTyped(json, false);
+}
+
+export function Model4XXResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): Model4XXResponse {
+    if ((json === undefined) || (json === null)) {
+        return json;
+    }
+    return {
+        
+        'type': !exists(json, 'type') ? undefined : json['type'],
+        'errors': !exists(json, 'errors') ? undefined : ((json['errors'] as Array<any>).map(Model4XXResponseErrorsInnerFromJSON)),
+    };
+}
+
+export function Model4XXResponseToJSON(value?: Model4XXResponse | null): any {
+    if (value === undefined) {
+        return undefined;
+    }
+    if (value === null) {
+        return null;
+    }
+    return {
+        
+        'type': value.type,
+        'errors': value.errors === undefined ? undefined : ((value.errors as Array<any>).map(Model4XXResponseErrorsInnerToJSON)),
+    };
+}
+

@@ -12,54 +12,70 @@
  * Do not edit the class manually.
  */
 
-
-import * as runtime from '../runtime';
-import type {
-  Model4XXResponse,
-  PhoneNumberListResponse,
-} from '../models/index';
-import {
-    Model4XXResponseFromJSON,
-    Model4XXResponseToJSON,
-    PhoneNumberListResponseFromJSON,
-    PhoneNumberListResponseToJSON,
-} from '../models/index';
-
+import { exists, mapValues } from '../runtime';
 /**
  * 
+ * @export
+ * @interface Model4XXResponseErrorsInner
  */
-export class PhoneNumbersApi extends runtime.BaseAPI {
-
+export interface Model4XXResponseErrorsInner {
     /**
      * 
-     * List Phone Numbers
+     * @type {string}
+     * @memberof Model4XXResponseErrorsInner
      */
-    async phoneNumbersListRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PhoneNumberListResponse>> {
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.apiKey) {
-            headerParameters["x-api-key"] = this.configuration.apiKey("x-api-key"); // x-api-key authentication
-        }
-
-        const response = await this.request({
-            path: `/phone_numbers`,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => PhoneNumberListResponseFromJSON(jsonValue));
-    }
-
+    code?: string;
     /**
      * 
-     * List Phone Numbers
+     * @type {string}
+     * @memberof Model4XXResponseErrorsInner
      */
-    async phoneNumbersList(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PhoneNumberListResponse> {
-        const response = await this.phoneNumbersListRaw(initOverrides);
-        return await response.value();
-    }
-
+    detail?: string;
+    /**
+     * 
+     * @type {object}
+     * @memberof Model4XXResponseErrorsInner
+     */
+    attr?: object;
 }
+
+/**
+ * Check if a given object implements the Model4XXResponseErrorsInner interface.
+ */
+export function instanceOfModel4XXResponseErrorsInner(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
+}
+
+export function Model4XXResponseErrorsInnerFromJSON(json: any): Model4XXResponseErrorsInner {
+    return Model4XXResponseErrorsInnerFromJSONTyped(json, false);
+}
+
+export function Model4XXResponseErrorsInnerFromJSONTyped(json: any, ignoreDiscriminator: boolean): Model4XXResponseErrorsInner {
+    if ((json === undefined) || (json === null)) {
+        return json;
+    }
+    return {
+        
+        'code': !exists(json, 'code') ? undefined : json['code'],
+        'detail': !exists(json, 'detail') ? undefined : json['detail'],
+        'attr': !exists(json, 'attr') ? undefined : json['attr'],
+    };
+}
+
+export function Model4XXResponseErrorsInnerToJSON(value?: Model4XXResponseErrorsInner | null): any {
+    if (value === undefined) {
+        return undefined;
+    }
+    if (value === null) {
+        return null;
+    }
+    return {
+        
+        'code': value.code,
+        'detail': value.detail,
+        'attr': value.attr,
+    };
+}
+

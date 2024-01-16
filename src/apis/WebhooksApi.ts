@@ -15,11 +15,14 @@
 
 import * as runtime from '../runtime';
 import type {
+  Model4XXResponse,
   WebhookListResponse,
   WebhookRequest,
   WebhookResponse,
 } from '../models/index';
 import {
+    Model4XXResponseFromJSON,
+    Model4XXResponseToJSON,
     WebhookListResponseFromJSON,
     WebhookListResponseToJSON,
     WebhookRequestFromJSON,
@@ -28,21 +31,21 @@ import {
     WebhookResponseToJSON,
 } from '../models/index';
 
-export interface DeleteDevWebhooks42Request {
+export interface WebhooksDeleteRequest {
     id: number;
-}
-
-export interface PatchDevWebhooks41Request {
-    id: number;
-    webhookRequest: WebhookRequest;
-}
-
-export interface PostDevWebhooksRequest {
-    webhookRequest: WebhookRequest;
 }
 
 export interface WebhooksGetRequest {
     id: number;
+}
+
+export interface WebhooksPostRequest {
+    webhookRequest: WebhookRequest;
+}
+
+export interface WebhooksUpdateRequest {
+    id: number;
+    webhookRequest: WebhookRequest;
 }
 
 /**
@@ -54,9 +57,9 @@ export class WebhooksApi extends runtime.BaseAPI {
      * 
      * Delete Webhook by Id
      */
-    async deleteDevWebhooks42Raw(requestParameters: DeleteDevWebhooks42Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async webhooksDeleteRaw(requestParameters: WebhooksDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deleteDevWebhooks42.');
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling webhooksDelete.');
         }
 
         const queryParameters: any = {};
@@ -81,90 +84,8 @@ export class WebhooksApi extends runtime.BaseAPI {
      * 
      * Delete Webhook by Id
      */
-    async deleteDevWebhooks42(requestParameters: DeleteDevWebhooks42Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.deleteDevWebhooks42Raw(requestParameters, initOverrides);
-    }
-
-    /**
-     * 
-     * Update Webhook by Id
-     */
-    async patchDevWebhooks41Raw(requestParameters: PatchDevWebhooks41Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<WebhookResponse>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling patchDevWebhooks41.');
-        }
-
-        if (requestParameters.webhookRequest === null || requestParameters.webhookRequest === undefined) {
-            throw new runtime.RequiredError('webhookRequest','Required parameter requestParameters.webhookRequest was null or undefined when calling patchDevWebhooks41.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        if (this.configuration && this.configuration.apiKey) {
-            headerParameters["x-api-key"] = this.configuration.apiKey("x-api-key"); // x-api-key authentication
-        }
-
-        const response = await this.request({
-            path: `/webhooks/{Id}`.replace(`{${"Id"}}`, encodeURIComponent(String(requestParameters.id))),
-            method: 'PATCH',
-            headers: headerParameters,
-            query: queryParameters,
-            body: WebhookRequestToJSON(requestParameters.webhookRequest),
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => WebhookResponseFromJSON(jsonValue));
-    }
-
-    /**
-     * 
-     * Update Webhook by Id
-     */
-    async patchDevWebhooks41(requestParameters: PatchDevWebhooks41Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<WebhookResponse> {
-        const response = await this.patchDevWebhooks41Raw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * 
-     * Create a Webhook
-     */
-    async postDevWebhooksRaw(requestParameters: PostDevWebhooksRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<WebhookResponse>> {
-        if (requestParameters.webhookRequest === null || requestParameters.webhookRequest === undefined) {
-            throw new runtime.RequiredError('webhookRequest','Required parameter requestParameters.webhookRequest was null or undefined when calling postDevWebhooks.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        if (this.configuration && this.configuration.apiKey) {
-            headerParameters["x-api-key"] = this.configuration.apiKey("x-api-key"); // x-api-key authentication
-        }
-
-        const response = await this.request({
-            path: `/webhooks`,
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-            body: WebhookRequestToJSON(requestParameters.webhookRequest),
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => WebhookResponseFromJSON(jsonValue));
-    }
-
-    /**
-     * 
-     * Create a Webhook
-     */
-    async postDevWebhooks(requestParameters: PostDevWebhooksRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<WebhookResponse> {
-        const response = await this.postDevWebhooksRaw(requestParameters, initOverrides);
-        return await response.value();
+    async webhooksDelete(requestParameters: WebhooksDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.webhooksDeleteRaw(requestParameters, initOverrides);
     }
 
     /**
@@ -232,6 +153,88 @@ export class WebhooksApi extends runtime.BaseAPI {
      */
     async webhooksList(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<WebhookListResponse> {
         const response = await this.webhooksListRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * 
+     * Create a Webhook
+     */
+    async webhooksPostRaw(requestParameters: WebhooksPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<WebhookResponse>> {
+        if (requestParameters.webhookRequest === null || requestParameters.webhookRequest === undefined) {
+            throw new runtime.RequiredError('webhookRequest','Required parameter requestParameters.webhookRequest was null or undefined when calling webhooksPost.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["x-api-key"] = this.configuration.apiKey("x-api-key"); // x-api-key authentication
+        }
+
+        const response = await this.request({
+            path: `/webhooks`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: WebhookRequestToJSON(requestParameters.webhookRequest),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => WebhookResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * 
+     * Create a Webhook
+     */
+    async webhooksPost(requestParameters: WebhooksPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<WebhookResponse> {
+        const response = await this.webhooksPostRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * 
+     * Update Webhook by Id
+     */
+    async webhooksUpdateRaw(requestParameters: WebhooksUpdateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<WebhookResponse>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling webhooksUpdate.');
+        }
+
+        if (requestParameters.webhookRequest === null || requestParameters.webhookRequest === undefined) {
+            throw new runtime.RequiredError('webhookRequest','Required parameter requestParameters.webhookRequest was null or undefined when calling webhooksUpdate.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["x-api-key"] = this.configuration.apiKey("x-api-key"); // x-api-key authentication
+        }
+
+        const response = await this.request({
+            path: `/webhooks/{Id}`.replace(`{${"Id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'PATCH',
+            headers: headerParameters,
+            query: queryParameters,
+            body: WebhookRequestToJSON(requestParameters.webhookRequest),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => WebhookResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * 
+     * Update Webhook by Id
+     */
+    async webhooksUpdate(requestParameters: WebhooksUpdateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<WebhookResponse> {
+        const response = await this.webhooksUpdateRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

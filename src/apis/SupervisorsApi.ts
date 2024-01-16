@@ -15,6 +15,7 @@
 
 import * as runtime from '../runtime';
 import type {
+  Model4XXResponse,
   SupervisorListResponse,
   SupervisorRequest,
   SupervisorResponse,
@@ -23,6 +24,8 @@ import type {
   SupervisorVerifyOtpResponse,
 } from '../models/index';
 import {
+    Model4XXResponseFromJSON,
+    Model4XXResponseToJSON,
     SupervisorListResponseFromJSON,
     SupervisorListResponseToJSON,
     SupervisorRequestFromJSON,

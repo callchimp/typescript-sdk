@@ -25,54 +25,68 @@ import {
     CallRequestByVendorLeadCodeFromJSONTyped,
     CallRequestByVendorLeadCodeToJSON,
 } from './CallRequestByVendorLeadCode';
+import type { TransactionCallRequestByLeadId } from './TransactionCallRequestByLeadId';
+import {
+    TransactionCallRequestByLeadIdFromJSON,
+    TransactionCallRequestByLeadIdFromJSONTyped,
+    TransactionCallRequestByLeadIdToJSON,
+} from './TransactionCallRequestByLeadId';
 
 /**
  * 
  * @export
- * @interface PostDevCallsRequest
+ * @interface CallsPostRequest
  */
-export interface PostDevCallsRequest {
+export interface CallsPostRequest {
     /**
-     * 
+     * Lead Id
      * @type {number}
-     * @memberof PostDevCallsRequest
+     * @memberof CallsPostRequest
      */
     lead: number;
     /**
+     * Transaction variable values that should match the variables in campaign `transaction_template`
+     * @type {object}
+     * @memberof CallsPostRequest
+     */
+    transactionVars: object;
+    /**
      * 
      * @type {string}
-     * @memberof PostDevCallsRequest
+     * @memberof CallsPostRequest
      */
     vendorLeadCode: string;
 }
 
 /**
- * Check if a given object implements the PostDevCallsRequest interface.
+ * Check if a given object implements the CallsPostRequest interface.
  */
-export function instanceOfPostDevCallsRequest(value: object): boolean {
+export function instanceOfCallsPostRequest(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "lead" in value;
+    isInstance = isInstance && "transactionVars" in value;
     isInstance = isInstance && "vendorLeadCode" in value;
 
     return isInstance;
 }
 
-export function PostDevCallsRequestFromJSON(json: any): PostDevCallsRequest {
-    return PostDevCallsRequestFromJSONTyped(json, false);
+export function CallsPostRequestFromJSON(json: any): CallsPostRequest {
+    return CallsPostRequestFromJSONTyped(json, false);
 }
 
-export function PostDevCallsRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): PostDevCallsRequest {
+export function CallsPostRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): CallsPostRequest {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
         'lead': json['lead'],
+        'transactionVars': json['transaction_vars'],
         'vendorLeadCode': json['vendor_lead_code'],
     };
 }
 
-export function PostDevCallsRequestToJSON(value?: PostDevCallsRequest | null): any {
+export function CallsPostRequestToJSON(value?: CallsPostRequest | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -82,6 +96,7 @@ export function PostDevCallsRequestToJSON(value?: PostDevCallsRequest | null): a
     return {
         
         'lead': value.lead,
+        'transaction_vars': value.transactionVars,
         'vendor_lead_code': value.vendorLeadCode,
     };
 }

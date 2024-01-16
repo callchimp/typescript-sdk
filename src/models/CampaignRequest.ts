@@ -43,6 +43,18 @@ export interface CampaignRequest {
      * @memberof CampaignRequest
      */
     type: CampaignRequestTypeEnum;
+    /**
+     * Template text with variable placeholders, where variables are represented like `{var1}`. Only required for `transactional` campaigns.
+     * @type {string}
+     * @memberof CampaignRequest
+     */
+    transactionTemplate?: string;
+    /**
+     * The GenAI prompt telling the bot how to behave when asked a question or how to continue the conversation.
+     * @type {string}
+     * @memberof CampaignRequest
+     */
+    chatScript?: string;
 }
 
 
@@ -94,6 +106,8 @@ export function CampaignRequestFromJSONTyped(json: any, ignoreDiscriminator: boo
         'maxRetry': json['max_retry'],
         'phoneNumber': json['phone_number'],
         'type': json['type'],
+        'transactionTemplate': !exists(json, 'transaction_template') ? undefined : json['transaction_template'],
+        'chatScript': !exists(json, 'chat_script') ? undefined : json['chat_script'],
     };
 }
 
@@ -110,6 +124,8 @@ export function CampaignRequestToJSON(value?: CampaignRequest | null): any {
         'max_retry': value.maxRetry,
         'phone_number': value.phoneNumber,
         'type': value.type,
+        'transaction_template': value.transactionTemplate,
+        'chat_script': value.chatScript,
     };
 }
 

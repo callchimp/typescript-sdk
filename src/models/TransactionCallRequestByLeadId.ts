@@ -12,54 +12,64 @@
  * Do not edit the class manually.
  */
 
-
-import * as runtime from '../runtime';
-import type {
-  Model4XXResponse,
-  PhoneNumberListResponse,
-} from '../models/index';
-import {
-    Model4XXResponseFromJSON,
-    Model4XXResponseToJSON,
-    PhoneNumberListResponseFromJSON,
-    PhoneNumberListResponseToJSON,
-} from '../models/index';
-
+import { exists, mapValues } from '../runtime';
 /**
  * 
+ * @export
+ * @interface TransactionCallRequestByLeadId
  */
-export class PhoneNumbersApi extends runtime.BaseAPI {
-
+export interface TransactionCallRequestByLeadId {
     /**
-     * 
-     * List Phone Numbers
+     * Lead Id
+     * @type {number}
+     * @memberof TransactionCallRequestByLeadId
      */
-    async phoneNumbersListRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PhoneNumberListResponse>> {
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.apiKey) {
-            headerParameters["x-api-key"] = this.configuration.apiKey("x-api-key"); // x-api-key authentication
-        }
-
-        const response = await this.request({
-            path: `/phone_numbers`,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => PhoneNumberListResponseFromJSON(jsonValue));
-    }
-
+    lead: number;
     /**
-     * 
-     * List Phone Numbers
+     * Transaction variable values that should match the variables in campaign `transaction_template`
+     * @type {object}
+     * @memberof TransactionCallRequestByLeadId
      */
-    async phoneNumbersList(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PhoneNumberListResponse> {
-        const response = await this.phoneNumbersListRaw(initOverrides);
-        return await response.value();
-    }
-
+    transactionVars: object;
 }
+
+/**
+ * Check if a given object implements the TransactionCallRequestByLeadId interface.
+ */
+export function instanceOfTransactionCallRequestByLeadId(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "lead" in value;
+    isInstance = isInstance && "transactionVars" in value;
+
+    return isInstance;
+}
+
+export function TransactionCallRequestByLeadIdFromJSON(json: any): TransactionCallRequestByLeadId {
+    return TransactionCallRequestByLeadIdFromJSONTyped(json, false);
+}
+
+export function TransactionCallRequestByLeadIdFromJSONTyped(json: any, ignoreDiscriminator: boolean): TransactionCallRequestByLeadId {
+    if ((json === undefined) || (json === null)) {
+        return json;
+    }
+    return {
+        
+        'lead': json['lead'],
+        'transactionVars': json['transaction_vars'],
+    };
+}
+
+export function TransactionCallRequestByLeadIdToJSON(value?: TransactionCallRequestByLeadId | null): any {
+    if (value === undefined) {
+        return undefined;
+    }
+    if (value === null) {
+        return null;
+    }
+    return {
+        
+        'lead': value.lead,
+        'transaction_vars': value.transactionVars,
+    };
+}
+

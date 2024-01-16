@@ -23,6 +23,7 @@ import type {
   CampaignRequest,
   CampaignResponse,
   CampaignUploadAudioResponse,
+  Model4XXResponse,
 } from '../models/index';
 import {
     CampaignAddSuperRequestFromJSON,
@@ -41,6 +42,8 @@ import {
     CampaignResponseToJSON,
     CampaignUploadAudioResponseFromJSON,
     CampaignUploadAudioResponseToJSON,
+    Model4XXResponseFromJSON,
+    Model4XXResponseToJSON,
 } from '../models/index';
 
 export interface CampaignsAddsuperRequest {

@@ -15,12 +15,15 @@
 
 import * as runtime from '../runtime';
 import type {
+  Model4XXResponse,
   SubscriberListResponse,
   SubscriberRequest,
   SubscriberResponse,
   SubscribersUpdate,
 } from '../models/index';
 import {
+    Model4XXResponseFromJSON,
+    Model4XXResponseToJSON,
     SubscriberListResponseFromJSON,
     SubscriberListResponseToJSON,
     SubscriberRequestFromJSON,
@@ -30,11 +33,6 @@ import {
     SubscribersUpdateFromJSON,
     SubscribersUpdateToJSON,
 } from '../models/index';
-
-export interface PatchDevSubscribersByIdRequest {
-    id: number;
-    subscribersUpdate: SubscribersUpdate;
-}
 
 export interface SubscribersDeleteRequest {
     id: number;
@@ -53,53 +51,15 @@ export interface SubscribersPostRequest {
     call?: boolean;
 }
 
+export interface SubscribersUpdateRequest {
+    id: number;
+    subscribersUpdate: SubscribersUpdate;
+}
+
 /**
  * 
  */
 export class SubscribersApi extends runtime.BaseAPI {
-
-    /**
-     * 
-     * Update Subscriber by Id
-     */
-    async patchDevSubscribersByIdRaw(requestParameters: PatchDevSubscribersByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SubscriberResponse>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling patchDevSubscribersById.');
-        }
-
-        if (requestParameters.subscribersUpdate === null || requestParameters.subscribersUpdate === undefined) {
-            throw new runtime.RequiredError('subscribersUpdate','Required parameter requestParameters.subscribersUpdate was null or undefined when calling patchDevSubscribersById.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        if (this.configuration && this.configuration.apiKey) {
-            headerParameters["x-api-key"] = this.configuration.apiKey("x-api-key"); // x-api-key authentication
-        }
-
-        const response = await this.request({
-            path: `/subscribers/{Id}`.replace(`{${"Id"}}`, encodeURIComponent(String(requestParameters.id))),
-            method: 'PATCH',
-            headers: headerParameters,
-            query: queryParameters,
-            body: SubscribersUpdateToJSON(requestParameters.subscribersUpdate),
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => SubscriberResponseFromJSON(jsonValue));
-    }
-
-    /**
-     * 
-     * Update Subscriber by Id
-     */
-    async patchDevSubscribersById(requestParameters: PatchDevSubscribersByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SubscriberResponse> {
-        const response = await this.patchDevSubscribersByIdRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
 
     /**
      * 
@@ -248,6 +208,49 @@ export class SubscribersApi extends runtime.BaseAPI {
      */
     async subscribersPost(requestParameters: SubscribersPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SubscriberResponse> {
         const response = await this.subscribersPostRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * 
+     * Update Subscriber by Id
+     */
+    async subscribersUpdateRaw(requestParameters: SubscribersUpdateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SubscriberResponse>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling subscribersUpdate.');
+        }
+
+        if (requestParameters.subscribersUpdate === null || requestParameters.subscribersUpdate === undefined) {
+            throw new runtime.RequiredError('subscribersUpdate','Required parameter requestParameters.subscribersUpdate was null or undefined when calling subscribersUpdate.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["x-api-key"] = this.configuration.apiKey("x-api-key"); // x-api-key authentication
+        }
+
+        const response = await this.request({
+            path: `/subscribers/{Id}`.replace(`{${"Id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'PATCH',
+            headers: headerParameters,
+            query: queryParameters,
+            body: SubscribersUpdateToJSON(requestParameters.subscribersUpdate),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SubscriberResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * 
+     * Update Subscriber by Id
+     */
+    async subscribersUpdate(requestParameters: SubscribersUpdateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SubscriberResponse> {
+        const response = await this.subscribersUpdateRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

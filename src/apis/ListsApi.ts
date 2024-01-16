@@ -18,6 +18,7 @@ import type {
   ListsListResponse,
   ListsRequest,
   ListsResponse,
+  Model4XXResponse,
 } from '../models/index';
 import {
     ListsListResponseFromJSON,
@@ -26,13 +27,15 @@ import {
     ListsRequestToJSON,
     ListsResponseFromJSON,
     ListsResponseToJSON,
+    Model4XXResponseFromJSON,
+    Model4XXResponseToJSON,
 } from '../models/index';
 
-export interface DeleteDevLists150Request {
+export interface ListsDeleteRequest {
     id: number;
 }
 
-export interface GetDevLists137Request {
+export interface ListsGetRequest {
     id: number;
 }
 
@@ -40,12 +43,12 @@ export interface ListsListRequest {
     page?: number;
 }
 
-export interface PatchDevLists151Request {
-    id: number;
+export interface ListsPostRequest {
     listsRequest: ListsRequest;
 }
 
-export interface PostDevListsRequest {
+export interface ListsUpdateRequest {
+    id: number;
     listsRequest: ListsRequest;
 }
 
@@ -58,9 +61,9 @@ export class ListsApi extends runtime.BaseAPI {
      * 
      * Delete List by Id
      */
-    async deleteDevLists150Raw(requestParameters: DeleteDevLists150Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async listsDeleteRaw(requestParameters: ListsDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deleteDevLists150.');
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling listsDelete.');
         }
 
         const queryParameters: any = {};
@@ -85,17 +88,17 @@ export class ListsApi extends runtime.BaseAPI {
      * 
      * Delete List by Id
      */
-    async deleteDevLists150(requestParameters: DeleteDevLists150Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.deleteDevLists150Raw(requestParameters, initOverrides);
+    async listsDelete(requestParameters: ListsDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.listsDeleteRaw(requestParameters, initOverrides);
     }
 
     /**
      * 
      * Get List by Id
      */
-    async getDevLists137Raw(requestParameters: GetDevLists137Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ListsResponse>> {
+    async listsGetRaw(requestParameters: ListsGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ListsResponse>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getDevLists137.');
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling listsGet.');
         }
 
         const queryParameters: any = {};
@@ -120,8 +123,8 @@ export class ListsApi extends runtime.BaseAPI {
      * 
      * Get List by Id
      */
-    async getDevLists137(requestParameters: GetDevLists137Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ListsResponse> {
-        const response = await this.getDevLists137Raw(requestParameters, initOverrides);
+    async listsGet(requestParameters: ListsGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ListsResponse> {
+        const response = await this.listsGetRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -163,54 +166,11 @@ export class ListsApi extends runtime.BaseAPI {
 
     /**
      * 
-     * Update List by Id
-     */
-    async patchDevLists151Raw(requestParameters: PatchDevLists151Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ListsResponse>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling patchDevLists151.');
-        }
-
-        if (requestParameters.listsRequest === null || requestParameters.listsRequest === undefined) {
-            throw new runtime.RequiredError('listsRequest','Required parameter requestParameters.listsRequest was null or undefined when calling patchDevLists151.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        if (this.configuration && this.configuration.apiKey) {
-            headerParameters["x-api-key"] = this.configuration.apiKey("x-api-key"); // x-api-key authentication
-        }
-
-        const response = await this.request({
-            path: `/lists/{Id}`.replace(`{${"Id"}}`, encodeURIComponent(String(requestParameters.id))),
-            method: 'PATCH',
-            headers: headerParameters,
-            query: queryParameters,
-            body: ListsRequestToJSON(requestParameters.listsRequest),
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => ListsResponseFromJSON(jsonValue));
-    }
-
-    /**
-     * 
-     * Update List by Id
-     */
-    async patchDevLists151(requestParameters: PatchDevLists151Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ListsResponse> {
-        const response = await this.patchDevLists151Raw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * 
      * Create a List
      */
-    async postDevListsRaw(requestParameters: PostDevListsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ListsResponse>> {
+    async listsPostRaw(requestParameters: ListsPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ListsResponse>> {
         if (requestParameters.listsRequest === null || requestParameters.listsRequest === undefined) {
-            throw new runtime.RequiredError('listsRequest','Required parameter requestParameters.listsRequest was null or undefined when calling postDevLists.');
+            throw new runtime.RequiredError('listsRequest','Required parameter requestParameters.listsRequest was null or undefined when calling listsPost.');
         }
 
         const queryParameters: any = {};
@@ -238,8 +198,51 @@ export class ListsApi extends runtime.BaseAPI {
      * 
      * Create a List
      */
-    async postDevLists(requestParameters: PostDevListsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ListsResponse> {
-        const response = await this.postDevListsRaw(requestParameters, initOverrides);
+    async listsPost(requestParameters: ListsPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ListsResponse> {
+        const response = await this.listsPostRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * 
+     * Update List by Id
+     */
+    async listsUpdateRaw(requestParameters: ListsUpdateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ListsResponse>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling listsUpdate.');
+        }
+
+        if (requestParameters.listsRequest === null || requestParameters.listsRequest === undefined) {
+            throw new runtime.RequiredError('listsRequest','Required parameter requestParameters.listsRequest was null or undefined when calling listsUpdate.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["x-api-key"] = this.configuration.apiKey("x-api-key"); // x-api-key authentication
+        }
+
+        const response = await this.request({
+            path: `/lists/{Id}`.replace(`{${"Id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'PATCH',
+            headers: headerParameters,
+            query: queryParameters,
+            body: ListsRequestToJSON(requestParameters.listsRequest),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => ListsResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * 
+     * Update List by Id
+     */
+    async listsUpdate(requestParameters: ListsUpdateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ListsResponse> {
+        const response = await this.listsUpdateRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

@@ -19,8 +19,9 @@ import type {
   CallReportRequest,
   CallReportResponse,
   CallResponse,
+  CallsPostRequest,
   InboundCallListResponse,
-  PostDevCallsRequest,
+  Model4XXResponse,
 } from '../models/index';
 import {
     CallListResponseFromJSON,
@@ -31,31 +32,33 @@ import {
     CallReportResponseToJSON,
     CallResponseFromJSON,
     CallResponseToJSON,
+    CallsPostRequestFromJSON,
+    CallsPostRequestToJSON,
     InboundCallListResponseFromJSON,
     InboundCallListResponseToJSON,
-    PostDevCallsRequestFromJSON,
-    PostDevCallsRequestToJSON,
+    Model4XXResponseFromJSON,
+    Model4XXResponseToJSON,
 } from '../models/index';
 
 export interface CallsGetRequest {
     id: number;
 }
 
-export interface CallsListRequest {
+export interface CallsListInboundRequest {
     page?: number;
+}
+
+export interface CallsListOutboundRequest {
+    page?: number;
+}
+
+export interface CallsPostOperationRequest {
+    callsPostRequest: CallsPostRequest;
 }
 
 export interface CallsReportsRequest {
     callReportRequest: CallReportRequest;
     retries?: number;
-}
-
-export interface GetDevCallsInboundRequest {
-    page?: number;
-}
-
-export interface PostDevCallsOperationRequest {
-    postDevCallsRequest: PostDevCallsRequest;
 }
 
 /**
@@ -65,7 +68,7 @@ export class CallsApi extends runtime.BaseAPI {
 
     /**
      * 
-     * Get Call by ID
+     * Get Call by Id
      */
     async callsGetRaw(requestParameters: CallsGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CallResponse>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
@@ -92,7 +95,7 @@ export class CallsApi extends runtime.BaseAPI {
 
     /**
      * 
-     * Get Call by ID
+     * Get Call by Id
      */
     async callsGet(requestParameters: CallsGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CallResponse> {
         const response = await this.callsGetRaw(requestParameters, initOverrides);
@@ -101,9 +104,45 @@ export class CallsApi extends runtime.BaseAPI {
 
     /**
      * 
+     * List Inbound Calls
+     */
+    async callsListInboundRaw(requestParameters: CallsListInboundRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<InboundCallListResponse>> {
+        const queryParameters: any = {};
+
+        if (requestParameters.page !== undefined) {
+            queryParameters['page'] = requestParameters.page;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["x-api-key"] = this.configuration.apiKey("x-api-key"); // x-api-key authentication
+        }
+
+        const response = await this.request({
+            path: `/calls/inbound`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => InboundCallListResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * 
+     * List Inbound Calls
+     */
+    async callsListInbound(requestParameters: CallsListInboundRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<InboundCallListResponse> {
+        const response = await this.callsListInboundRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * 
      * List Outbound Calls
      */
-    async callsListRaw(requestParameters: CallsListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CallListResponse>> {
+    async callsListOutboundRaw(requestParameters: CallsListOutboundRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CallListResponse>> {
         const queryParameters: any = {};
 
         if (requestParameters.page !== undefined) {
@@ -130,8 +169,47 @@ export class CallsApi extends runtime.BaseAPI {
      * 
      * List Outbound Calls
      */
-    async callsList(requestParameters: CallsListRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CallListResponse> {
-        const response = await this.callsListRaw(requestParameters, initOverrides);
+    async callsListOutbound(requestParameters: CallsListOutboundRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CallListResponse> {
+        const response = await this.callsListOutboundRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * 
+     * Create a Call
+     */
+    async callsPostRaw(requestParameters: CallsPostOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CallResponse>> {
+        if (requestParameters.callsPostRequest === null || requestParameters.callsPostRequest === undefined) {
+            throw new runtime.RequiredError('callsPostRequest','Required parameter requestParameters.callsPostRequest was null or undefined when calling callsPost.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["x-api-key"] = this.configuration.apiKey("x-api-key"); // x-api-key authentication
+        }
+
+        const response = await this.request({
+            path: `/calls`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: CallsPostRequestToJSON(requestParameters.callsPostRequest),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => CallResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * 
+     * Create a Call
+     */
+    async callsPost(requestParameters: CallsPostOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CallResponse> {
+        const response = await this.callsPostRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -175,81 +253,6 @@ export class CallsApi extends runtime.BaseAPI {
      */
     async callsReports(requestParameters: CallsReportsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CallReportResponse> {
         const response = await this.callsReportsRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * 
-     * List Inbound Calls
-     */
-    async getDevCallsInboundRaw(requestParameters: GetDevCallsInboundRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<InboundCallListResponse>> {
-        const queryParameters: any = {};
-
-        if (requestParameters.page !== undefined) {
-            queryParameters['page'] = requestParameters.page;
-        }
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.apiKey) {
-            headerParameters["x-api-key"] = this.configuration.apiKey("x-api-key"); // x-api-key authentication
-        }
-
-        const response = await this.request({
-            path: `/calls/inbound`,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => InboundCallListResponseFromJSON(jsonValue));
-    }
-
-    /**
-     * 
-     * List Inbound Calls
-     */
-    async getDevCallsInbound(requestParameters: GetDevCallsInboundRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<InboundCallListResponse> {
-        const response = await this.getDevCallsInboundRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * 
-     * Create a Call
-     */
-    async postDevCallsRaw(requestParameters: PostDevCallsOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CallResponse>> {
-        if (requestParameters.postDevCallsRequest === null || requestParameters.postDevCallsRequest === undefined) {
-            throw new runtime.RequiredError('postDevCallsRequest','Required parameter requestParameters.postDevCallsRequest was null or undefined when calling postDevCalls.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        if (this.configuration && this.configuration.apiKey) {
-            headerParameters["x-api-key"] = this.configuration.apiKey("x-api-key"); // x-api-key authentication
-        }
-
-        const response = await this.request({
-            path: `/calls`,
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-            body: PostDevCallsRequestToJSON(requestParameters.postDevCallsRequest),
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => CallResponseFromJSON(jsonValue));
-    }
-
-    /**
-     * 
-     * Create a Call
-     */
-    async postDevCalls(requestParameters: PostDevCallsOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CallResponse> {
-        const response = await this.postDevCallsRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
